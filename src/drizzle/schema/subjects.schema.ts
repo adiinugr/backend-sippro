@@ -26,12 +26,19 @@ export const subjectsRelations = relations(subjects, ({ many }) => ({
 export const subjectsToSubjectGroups = pgTable(
   'subject_to_subject_groups',
   {
+    subjectOrder: integer('subject_order').notNull(),
     subjectId: integer('subject_id')
       .notNull()
-      .references(() => subjects.id),
+      .references(() => subjects.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
     subjectGroupId: integer('subject_group_id')
       .notNull()
-      .references(() => subjectGroups.id),
+      .references(() => subjectGroups.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
   },
   (table) => ({
     pk: primaryKey({

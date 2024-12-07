@@ -1,5 +1,5 @@
 {
-  "id": "c7da2c71-2960-499f-b00a-716517cbae92",
+  "id": "e2fae9e4-fe8c-4b0d-b8c5-b865e8ff2bf3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -17,6 +17,12 @@
         "name": {
           "name": "name",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "grade_id": {
+          "name": "grade_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         }
@@ -168,6 +174,30 @@
           "primaryKey": false,
           "notNull": true
         },
+        "nis": {
+          "name": "nis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nisn": {
+          "name": "nisn",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "place_of_birth": {
+          "name": "place_of_birth",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_of_birth": {
+          "name": "date_of_birth",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
         "email": {
           "name": "email",
           "type": "text",
@@ -178,7 +208,7 @@
           "name": "password",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         }
       },
       "indexes": {},
@@ -269,8 +299,8 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
         "subject_groups_to_classrooms_to_students_classroom_id_classrooms_id_fk": {
           "name": "subject_groups_to_classrooms_to_students_classroom_id_classrooms_id_fk",
@@ -282,8 +312,8 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
         "subject_groups_to_classrooms_to_students_student_id_students_id_fk": {
           "name": "subject_groups_to_classrooms_to_students_student_id_students_id_fk",
@@ -295,8 +325,8 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -335,12 +365,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "subject_group_id": {
-          "name": "subject_group_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -362,6 +386,72 @@
           ]
         }
       },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.subject_to_subject_groups": {
+      "name": "subject_to_subject_groups",
+      "schema": "",
+      "columns": {
+        "subject_order": {
+          "name": "subject_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "subject_group_id": {
+          "name": "subject_group_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "subject_to_subject_groups_subject_id_subjects_id_fk": {
+          "name": "subject_to_subject_groups_subject_id_subjects_id_fk",
+          "tableFrom": "subject_to_subject_groups",
+          "tableTo": "subjects",
+          "columnsFrom": [
+            "subject_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "subject_to_subject_groups_subject_group_id_subject_groups_id_fk": {
+          "name": "subject_to_subject_groups_subject_group_id_subject_groups_id_fk",
+          "tableFrom": "subject_to_subject_groups",
+          "tableTo": "subject_groups",
+          "columnsFrom": [
+            "subject_group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "subject_to_subject_groups_subject_id_subject_group_id_pk": {
+          "name": "subject_to_subject_groups_subject_id_subject_group_id_pk",
+          "columns": [
+            "subject_id",
+            "subject_group_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

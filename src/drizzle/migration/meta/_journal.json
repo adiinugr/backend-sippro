@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1732466867522,
-      "tag": "0000_large_alex_power",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1732467781144,
-      "tag": "0001_dark_fenris",
+      "when": 1733562174163,
+      "tag": "0000_spooky_power_man",
       "breakpoints": true
     }
   ]

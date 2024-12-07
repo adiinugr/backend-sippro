@@ -89,116 +89,116 @@ const db = drizzle(pool, { schema }) as NodePgDatabase<typeof schema>;
 //   await db.delete();
 // }
 
-async function main() {
-  const insertedClassrooms = await db
-    .insert(schema.classrooms)
-    .values(classroomArray)
-    .returning();
+// async function main() {
+//   const insertedClassrooms = await db
+//     .insert(schema.classrooms)
+//     .values(classroomArray)
+//     .returning();
 
-  const classroomIds = insertedClassrooms.map((classroom) => classroom.id);
+//   const classroomIds = insertedClassrooms.map((classroom) => classroom.id);
 
-  const insertedLessonYears = await db
-    .insert(schema.lessonYears)
-    .values(lessonYearArray)
-    .returning();
+//   const insertedLessonYears = await db
+//     .insert(schema.lessonYears)
+//     .values(lessonYearArray)
+//     .returning();
 
-  const lessonYearIds = insertedLessonYears.map((lessonYear) => lessonYear.id);
+//   const lessonYearIds = insertedLessonYears.map((lessonYear) => lessonYear.id);
 
-  const insertedGrades = await db
-    .insert(schema.grades)
-    .values(gradeArray)
-    .returning();
+//   const insertedGrades = await db
+//     .insert(schema.grades)
+//     .values(gradeArray)
+//     .returning();
 
-  const gradeIds = insertedGrades.map((grade) => grade.id);
+//   const gradeIds = insertedGrades.map((grade) => grade.id);
 
-  // const insertedSubjects = await db
-  //   .insert(schema.subjects)
-  //   .values(subjectArray)
-  //   .returning();
+// const insertedSubjects = await db
+//   .insert(schema.subjects)
+//   .values(subjectArray)
+//   .returning();
 
-  // const subjectIds = insertedSubjects.map((subject) => subject.id);
+// const subjectIds = insertedSubjects.map((subject) => subject.id);
 
-  const studentIds = await Promise.all(
-    Array(50)
-      .fill('')
-      .map(async () => {
-        const student = await db
-          .insert(schema.students)
-          .values({
-            name: faker.person.fullName(),
-            email: faker.internet.email(),
-            password: '',
-          })
-          .returning();
+// const studentIds = await Promise.all(
+//   Array(50)
+//     .fill('')
+//     .map(async () => {
+//       const student = await db
+//         .insert(schema.students)
+//         .values({
+//           name: faker.person.fullName(),
+//           email: faker.internet.email(),
+//           password: '',
+//         })
+//         .returning();
 
-        return student[0].id;
-      }),
-  );
+//       return student[0].id;
+//     }),
+// );
 
-  // const subjectGroupIds = await Promise.all(
-  //   Array(10)
-  //     .fill('')
-  //     .map(async () => {
-  //       const subjectGroup = await db
-  //         .insert(schema.subjectGroups)
-  //         .values({
-  //           name: faker.helpers.arrayElement(subjectGroupArray),
-  //           lessonYearId: faker.helpers.arrayElement(lessonYearIds),
-  //         })
-  //         .returning();
+// const subjectGroupIds = await Promise.all(
+//   Array(10)
+//     .fill('')
+//     .map(async () => {
+//       const subjectGroup = await db
+//         .insert(schema.subjectGroups)
+//         .values({
+//           name: faker.helpers.arrayElement(subjectGroupArray),
+//           lessonYearId: faker.helpers.arrayElement(lessonYearIds),
+//         })
+//         .returning();
 
-  //       return subjectGroup[0].id;
-  //     }),
-  // );
+//       return subjectGroup[0].id;
+//     }),
+// );
 
-  // await Promise.all(
-  //   studentIds.map(async (studentId) => {
-  //     return await db
-  //       .insert(schema.studentsToSubjectGroups)
-  //       .values({
-  //         studentId,
-  //         subjectGroupId: faker.helpers.arrayElement(subjectGroupIds),
-  //       })
-  //       .returning();
-  //   }),
-  // );
+// await Promise.all(
+//   studentIds.map(async (studentId) => {
+//     return await db
+//       .insert(schema.studentsToSubjectGroups)
+//       .values({
+//         studentId,
+//         subjectGroupId: faker.helpers.arrayElement(subjectGroupIds),
+//       })
+//       .returning();
+//   }),
+// );
 
-  // await Promise.all(
-  //   subjectIds.map(async (subjectId) => {
-  //     return await db
-  //       .insert(schema.subjectsToSubjectGroups)
-  //       .values({
-  //         subjectId,
-  //         subjectGroupId: faker.helpers.arrayElement(subjectGroupIds),
-  //       })
-  //       .returning();
-  //   }),
-  // );
+// await Promise.all(
+//   subjectIds.map(async (subjectId) => {
+//     return await db
+//       .insert(schema.subjectsToSubjectGroups)
+//       .values({
+//         subjectId,
+//         subjectGroupId: faker.helpers.arrayElement(subjectGroupIds),
+//       })
+//       .returning();
+//   }),
+// );
 
-  // await Promise.all(
-  //   gradeIds.map(async (gradeId) => {
-  //     return await db
-  //       .insert(schema.gradesToSubjectGroups)
-  //       .values({
-  //         gradeId,
-  //         subjectGroupId: faker.helpers.arrayElement(subjectGroupIds),
-  //       })
-  //       .returning();
-  //   }),
-  // );
+// await Promise.all(
+//   gradeIds.map(async (gradeId) => {
+//     return await db
+//       .insert(schema.gradesToSubjectGroups)
+//       .values({
+//         gradeId,
+//         subjectGroupId: faker.helpers.arrayElement(subjectGroupIds),
+//       })
+//       .returning();
+//   }),
+// );
 
-  // await Promise.all(
-  //   lessonYearIds.map(async (lessonYearId) => {
-  //     return await db
-  //       .insert(schema.classroomsToLessonYears)
-  //       .values({
-  //         lessonYearId,
-  //         classroomId: faker.helpers.arrayElement(classroomIds),
-  //       })
-  //       .returning();
-  //   }),
-  // );
-}
+// await Promise.all(
+//   lessonYearIds.map(async (lessonYearId) => {
+//     return await db
+//       .insert(schema.classroomsToLessonYears)
+//       .values({
+//         lessonYearId,
+//         classroomId: faker.helpers.arrayElement(classroomIds),
+//       })
+//       .returning();
+//   }),
+// );
+// }
 
 // main()
 //   .then()

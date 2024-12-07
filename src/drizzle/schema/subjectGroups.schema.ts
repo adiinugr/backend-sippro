@@ -48,13 +48,22 @@ export const subjectGroupsToClassroomsToStudents = pgTable(
   {
     subjectGroupId: integer('subject_group_id')
       .notNull()
-      .references(() => subjectGroups.id),
+      .references(() => subjectGroups.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
     classroomId: integer('classroom_id')
       .notNull()
-      .references(() => classrooms.id),
+      .references(() => classrooms.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
     studentId: integer('student_id')
       .notNull()
-      .references(() => students.id),
+      .references(() => students.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
   },
   (table) => ({
     pk: primaryKey({
@@ -76,7 +85,7 @@ export const subjectGroupsToClassroomsToStudentsRelations = relations(
       references: [classrooms.id],
     }),
     student: one(students, {
-      fields: [subjectGroupsToClassroomsToStudents.classroomId],
+      fields: [subjectGroupsToClassroomsToStudents.studentId],
       references: [students.id],
     }),
   }),
