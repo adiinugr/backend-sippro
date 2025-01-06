@@ -5,3 +5,5 @@ export * from './lessonYears.schema';
 export * from './subjectGroups.schema';
 export * from './grades.schema';
 export * from './marks.schema';
+export * from './roles.schema';
+export * from './teachers.schema';

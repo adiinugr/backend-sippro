@@ -1,9 +1,16 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import {
+  integer,
+  pgTable,
+  primaryKey,
+  serial,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 
 // Schema
-import { subjectGroupsToClassroomsToStudents } from './subjectGroups.schema';
 import { marks } from './marks.schema';
+import { clsrmsToSbjgs } from './classrooms.schema';
 
 export const students = pgTable('students', {
   id: serial('id').primaryKey(),
@@ -15,15 +22,54 @@ export const students = pgTable('students', {
   dateOfBirth: timestamp('date_of_birth', {
     mode: 'string',
   }).notNull(),
+  status: text('status').notNull().default('student'),
   // Acoount
   email: text('email').notNull().unique(),
-  password: text('password'),
+  password: text('password').notNull(),
 });
 
 // students relations
 export const studentsRelations = relations(students, ({ many }) => ({
-  subjectGroupsToClassroomsToStudents: many(
-    subjectGroupsToClassroomsToStudents,
-  ),
+  // stTSbTc means studentsToSubjectGroupsToClassrooms
+  stTSbgTc: many(stdsToSbjgsToClsrms),
   marks: many(marks),
 }));
+
+// students to subject groups to classrooms Join Table
+export const stdsToSbjgsToClsrms = pgTable(
+  'stds_to_sbjgs_to_clsrms',
+  {
+    studentId: integer('student_id')
+      .notNull()
+      .references(() => students.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
+    clsrmToSbjgId: integer('clsrm_to_sbjg_id')
+      .notNull()
+      .references(() => clsrmsToSbjgs.id, {
+        onDelete: 'cascade',
+        onUpdate: 'cascade',
+      }),
+  },
+  (table) => ({
+    pk: primaryKey({
+      columns: [table.studentId, table.clsrmToSbjgId],
+    }),
+  }),
+);
+
+// students to subject groups to classrooms Relations
+export const stdsToSbjgsToClsrmsRelations = relations(
+  stdsToSbjgsToClsrms,
+  ({ one }) => ({
+    student: one(students, {
+      fields: [stdsToSbjgsToClsrms.studentId],
+      references: [students.id],
+    }),
+    clsrmsToSbjg: one(clsrmsToSbjgs, {
+      fields: [stdsToSbjgsToClsrms.clsrmToSbjgId],
+      references: [clsrmsToSbjgs.id],
+    }),
+  }),
+);

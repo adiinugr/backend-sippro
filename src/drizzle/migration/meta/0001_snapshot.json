@@ -1,6 +1,6 @@
 {
-  "id": "30de2920-21de-40ec-9d0d-ddfece8f337b",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5e0f8eed-c0fc-4be8-b52e-29d9aad469b0",
+  "prevId": "30de2920-21de-40ec-9d0d-ddfece8f337b",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -515,6 +515,12 @@
           "name": "id",
           "type": "serial",
           "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true
         },
         "place_of_birth": {

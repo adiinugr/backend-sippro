@@ -19,12 +19,12 @@ export const subjects = pgTable('subjects', {
 // subjects relations
 export const subjectsRelations = relations(subjects, ({ many }) => ({
   marks: many(marks),
-  subjectsToSubjectGroups: many(subjectsToSubjectGroups),
+  sbjsToSbjgs: many(sbjsToSbjgs),
 }));
 
 // subjects to subject groups Join Table
-export const subjectsToSubjectGroups = pgTable(
-  'subject_to_subject_groups',
+export const sbjsToSbjgs = pgTable(
+  'sbjs_to_sbjgs',
   {
     subjectOrder: integer('subject_order').notNull(),
     subjectId: integer('subject_id')
@@ -48,16 +48,13 @@ export const subjectsToSubjectGroups = pgTable(
 );
 
 // subjects to subjectGroups Relations
-export const subjectsToSubjectGroupsRelations = relations(
-  subjectsToSubjectGroups,
-  ({ one }) => ({
-    subject: one(subjects, {
-      fields: [subjectsToSubjectGroups.subjectId],
-      references: [subjects.id],
-    }),
-    subjectGroup: one(subjectGroups, {
-      fields: [subjectsToSubjectGroups.subjectGroupId],
-      references: [subjectGroups.id],
-    }),
+export const sbjsToSbjgsRelations = relations(sbjsToSbjgs, ({ one }) => ({
+  subject: one(subjects, {
+    fields: [sbjsToSbjgs.subjectId],
+    references: [subjects.id],
   }),
-);
+  subjectGroup: one(subjectGroups, {
+    fields: [sbjsToSbjgs.subjectGroupId],
+    references: [subjectGroups.id],
+  }),
+}));
