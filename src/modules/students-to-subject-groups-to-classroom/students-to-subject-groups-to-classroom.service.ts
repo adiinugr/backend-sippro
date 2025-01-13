@@ -12,6 +12,7 @@ import { and, eq } from 'drizzle-orm';
 import { stdsToSbjgsToClsrms } from 'src/drizzle/schema/students.schema';
 import { classrooms } from 'src/drizzle/schema/classrooms.schema';
 import { DeleteStudentsToSubjectGroupsToClassroomDto } from 'src/modules/students-to-subject-groups-to-classroom/dto/delete-students-to-subject-groups-to-classroom.dto';
+import { CreateStudentsToSubjectGroupsToClassroomByNisDto } from 'src/modules/students-to-subject-groups-to-classroom/dto/create-students-to-subject-groups-to-classroom-by-nis.dto';
 
 @Injectable()
 export class StudentsToSubjectGroupsToClassroomService {
@@ -64,6 +65,61 @@ export class StudentsToSubjectGroupsToClassroomService {
         studentId: createStudentsToSubjectGroupsToClassroomsDto.studentId,
         clsrmToSbjgId:
           createStudentsToSubjectGroupsToClassroomsDto.classroomsToSubjectGroupId,
+      })
+      .returning();
+    return createdSubjectGroupsToClassroomToStudent.pop();
+  }
+
+  async createByNis(
+    createStudentsToSubjectGroupsToClassroomsByNisDto: CreateStudentsToSubjectGroupsToClassroomByNisDto,
+  ) {
+    const studentByNis = await this.db.query.students.findFirst({
+      where: (students, { eq }) =>
+        eq(
+          students.nis,
+          createStudentsToSubjectGroupsToClassroomsByNisDto.studentNis,
+        ),
+      with: {
+        stTSbgTc: {
+          with: {
+            clsrmsToSbjg: {
+              with: {
+                classroom: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const mappedStudentByNis = studentByNis.stTSbgTc.map((item) => {
+      return item.clsrmsToSbjg.classroom.gradeId;
+    });
+
+    const classroomById = await this.db
+      .select()
+      .from(classrooms)
+      .where(
+        eq(
+          classrooms.id,
+          createStudentsToSubjectGroupsToClassroomsByNisDto.classroomId,
+        ),
+      );
+
+    const classroomGradeId = classroomById[0].gradeId;
+
+    if (mappedStudentByNis.includes(classroomGradeId)) {
+      throw new BadRequestException(
+        `${studentByNis.name} sudah ditambahkan di kelas lain pada jenjang yang sama!`,
+      );
+    }
+
+    const createdSubjectGroupsToClassroomToStudent = await this.db
+      .insert(stdsToSbjgsToClsrms)
+      .values({
+        studentId: studentByNis.id,
+        clsrmToSbjgId:
+          createStudentsToSubjectGroupsToClassroomsByNisDto.classroomsToSubjectGroupId,
       })
       .returning();
     return createdSubjectGroupsToClassroomToStudent.pop();
