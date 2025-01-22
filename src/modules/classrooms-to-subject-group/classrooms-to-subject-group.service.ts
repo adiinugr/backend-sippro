@@ -50,4 +50,22 @@ export class ClassroomsToSubjectGroupService {
 
     return deletedClassroomToSubjectGroup.pop();
   }
+
+  async removeByClassroomId(classroomId: number, subjectGroupId: number) {
+    const deletedClassroomToSubjectGroup = await this.db
+      .delete(clsrmsToSbjgs)
+      .where(
+        and(
+          eq(clsrmsToSbjgs.classroomId, classroomId),
+          eq(clsrmsToSbjgs.subjectGroupId, subjectGroupId),
+        ),
+      )
+      .returning();
+
+    if (deletedClassroomToSubjectGroup.length === 0) {
+      throw new NotFoundException('Data tidak ditemukan!');
+    }
+
+    return deletedClassroomToSubjectGroup.pop();
+  }
 }

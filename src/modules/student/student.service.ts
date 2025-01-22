@@ -77,6 +77,7 @@ export class StudentService {
       },
       where: (students, { eq }) => eq(students.id, id),
       with: {
+        achievements: true,
         marks: {
           with: {
             subject: true,

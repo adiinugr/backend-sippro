@@ -33,4 +33,15 @@ export class ClassroomsToSubjectGroupController {
   remove(@Param('id') id: string) {
     return this.classroomsToSubjectGroupService.remove(+id);
   }
+
+  @Delete('delete-by-classroom-id/:classroomId/:subjectGroupId')
+  removeByClassroomId(
+    @Param('classroomId') classroomId: number,
+    @Param('subjectGroupId') subjectGroupId: number,
+  ) {
+    return this.classroomsToSubjectGroupService.removeByClassroomId(
+      classroomId,
+      subjectGroupId,
+    );
+  }
 }

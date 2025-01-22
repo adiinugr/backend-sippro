@@ -19,6 +19,7 @@ import { RoleModule } from './modules/role/role.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { TeachersToRolesModule } from './modules/teachers-to-roles/teachers-to-roles.module';
+import { AchievementModule } from './modules/achievement/achievement.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { TeachersToRolesModule } from './modules/teachers-to-roles/teachers-to-r
     TeacherModule,
     AuthModule,
     TeachersToRolesModule,
+    AchievementModule,
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],

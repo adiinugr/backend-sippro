@@ -11,6 +11,7 @@ import {
 // Schema
 import { marks } from './marks.schema';
 import { clsrmsToSbjgs } from './classrooms.schema';
+import { achievements } from './achievements.schema';
 
 export const students = pgTable('students', {
   id: serial('id').primaryKey(),
@@ -33,6 +34,7 @@ export const studentsRelations = relations(students, ({ many }) => ({
   // stTSbTc means studentsToSubjectGroupsToClassrooms
   stTSbgTc: many(stdsToSbjgsToClsrms),
   marks: many(marks),
+  achievements: many(achievements),
 }));
 
 // students to subject groups to classrooms Join Table
