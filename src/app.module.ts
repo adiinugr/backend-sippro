@@ -20,6 +20,11 @@ import { TeacherModule } from './modules/teacher/teacher.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { TeachersToRolesModule } from './modules/teachers-to-roles/teachers-to-roles.module';
 import { AchievementModule } from './modules/achievement/achievement.module';
+import { RuleModule } from './modules/rule/rule.module';
+import { ViolationModule } from './modules/violation/violation.module';
+import { RuleCategoryModule } from './modules/rule-category/rule-category.module';
+import { PermissionModule } from './modules/permission/permission.module';
+import { RolesToPermissionsModule } from './modules/roles-to-permissions/roles-to-permissions.module';
 
 @Module({
   imports: [
@@ -39,6 +44,11 @@ import { AchievementModule } from './modules/achievement/achievement.module';
     AuthModule,
     TeachersToRolesModule,
     AchievementModule,
+    RuleModule,
+    RuleCategoryModule,
+    ViolationModule,
+    PermissionModule,
+    RolesToPermissionsModule,
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],

@@ -25,6 +25,11 @@ export class TeacherController {
     return this.teacherService.findAll();
   }
 
+  @Get('with-roles')
+  findAllWithRoles() {
+    return this.teacherService.findAllWithRoles();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.teacherService.findOne(+id);

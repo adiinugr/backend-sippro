@@ -1,6 +1,6 @@
 {
-  "id": "4b3d2744-3738-47e1-b8b9-14f39be6b6cd",
-  "prevId": "319b9228-313b-4913-bc93-616f648bf063",
+  "id": "86d619b9-63b4-4cb0-a470-b06af87a5b6b",
+  "prevId": "b7358015-d7ae-450a-bc53-2272ebc31b34",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -94,10 +94,10 @@
       "uniqueConstraints": {
         "classrooms_name_unique": {
           "name": "classrooms_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -158,10 +158,10 @@
       "uniqueConstraints": {
         "grades_name_unique": {
           "name": "grades_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -191,10 +191,10 @@
       "uniqueConstraints": {
         "lesson_years_name_unique": {
           "name": "lesson_years_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -265,6 +265,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -273,10 +280,10 @@
       "uniqueConstraints": {
         "permissions_name_unique": {
           "name": "permissions_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -306,10 +313,10 @@
       "uniqueConstraints": {
         "roles_name_unique": {
           "name": "roles_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -332,8 +339,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "permissions_id": {
-          "name": "permissions_id",
+        "permission_id": {
+          "name": "permission_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -372,28 +379,28 @@
         "roles_to_permissions_role_id_roles_id_fk": {
           "name": "roles_to_permissions_role_id_roles_id_fk",
           "tableFrom": "roles_to_permissions",
+          "tableTo": "roles",
           "columnsFrom": [
             "role_id"
           ],
-          "tableTo": "roles",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
-        "roles_to_permissions_permissions_id_permissions_id_fk": {
-          "name": "roles_to_permissions_permissions_id_permissions_id_fk",
+        "roles_to_permissions_permission_id_permissions_id_fk": {
+          "name": "roles_to_permissions_permission_id_permissions_id_fk",
           "tableFrom": "roles_to_permissions",
-          "columnsFrom": [
-            "permissions_id"
-          ],
           "tableTo": "permissions",
+          "columnsFrom": [
+            "permission_id"
+          ],
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -425,10 +432,10 @@
       "uniqueConstraints": {
         "rule_categories_name_unique": {
           "name": "rule_categories_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -469,25 +476,25 @@
         "rules_rule_category_id_rule_categories_id_fk": {
           "name": "rules_rule_category_id_rule_categories_id_fk",
           "tableFrom": "rules",
+          "tableTo": "rule_categories",
           "columnsFrom": [
             "rule_category_id"
           ],
-          "tableTo": "rule_categories",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "rules_name_unique": {
           "name": "rules_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -516,28 +523,28 @@
         "stds_to_sbjgs_to_clsrms_student_id_students_id_fk": {
           "name": "stds_to_sbjgs_to_clsrms_student_id_students_id_fk",
           "tableFrom": "stds_to_sbjgs_to_clsrms",
+          "tableTo": "students",
           "columnsFrom": [
             "student_id"
           ],
-          "tableTo": "students",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
         "stds_to_sbjgs_to_clsrms_clsrm_to_sbjg_id_clsrm_to_sbjgs_id_fk": {
           "name": "stds_to_sbjgs_to_clsrms_clsrm_to_sbjg_id_clsrm_to_sbjgs_id_fk",
           "tableFrom": "stds_to_sbjgs_to_clsrms",
+          "tableTo": "clsrm_to_sbjgs",
           "columnsFrom": [
             "clsrm_to_sbjg_id"
           ],
-          "tableTo": "clsrm_to_sbjgs",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -620,10 +627,10 @@
       "uniqueConstraints": {
         "students_email_unique": {
           "name": "students_email_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -695,28 +702,28 @@
         "sbjs_to_sbjgs_subject_id_subjects_id_fk": {
           "name": "sbjs_to_sbjgs_subject_id_subjects_id_fk",
           "tableFrom": "sbjs_to_sbjgs",
+          "tableTo": "subjects",
           "columnsFrom": [
             "subject_id"
           ],
-          "tableTo": "subjects",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
         "sbjs_to_sbjgs_subject_group_id_subject_groups_id_fk": {
           "name": "sbjs_to_sbjgs_subject_group_id_subject_groups_id_fk",
           "tableFrom": "sbjs_to_sbjgs",
+          "tableTo": "subject_groups",
           "columnsFrom": [
             "subject_group_id"
           ],
-          "tableTo": "subject_groups",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -768,17 +775,17 @@
       "uniqueConstraints": {
         "subjects_code_unique": {
           "name": "subjects_code_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "code"
-          ],
-          "nullsNotDistinct": false
+          ]
         },
         "subjects_name_unique": {
           "name": "subjects_name_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -839,10 +846,10 @@
       "uniqueConstraints": {
         "teachers_email_unique": {
           "name": "teachers_email_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       },
       "policies": {},
@@ -871,28 +878,28 @@
         "teachers_to_roles_teacher_id_teachers_id_fk": {
           "name": "teachers_to_roles_teacher_id_teachers_id_fk",
           "tableFrom": "teachers_to_roles",
+          "tableTo": "teachers",
           "columnsFrom": [
             "teacher_id"
           ],
-          "tableTo": "teachers",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         },
         "teachers_to_roles_role_id_roles_id_fk": {
           "name": "teachers_to_roles_role_id_roles_id_fk",
           "tableFrom": "teachers_to_roles",
+          "tableTo": "roles",
           "columnsFrom": [
             "role_id"
           ],
-          "tableTo": "roles",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -943,15 +950,15 @@
         "violations_rule_id_rules_id_fk": {
           "name": "violations_rule_id_rules_id_fk",
           "tableFrom": "violations",
+          "tableTo": "rules",
           "columnsFrom": [
             "rule_id"
           ],
-          "tableTo": "rules",
           "columnsTo": [
             "id"
           ],
-          "onUpdate": "cascade",
-          "onDelete": "cascade"
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -963,10 +970,10 @@
   },
   "enums": {},
   "schemas": {},
-  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

@@ -22,6 +22,11 @@ export class RoleService {
   async findAll() {
     const roles = await this.db.query.roles.findMany({
       with: {
+        rolesToPermissions: {
+          with: {
+            permissions: true,
+          },
+        },
         teachersToRoles: {
           with: {
             teachers: {
@@ -40,6 +45,13 @@ export class RoleService {
   async findOne(id: number) {
     const role = await this.db.query.roles.findFirst({
       where: (roles, { eq }) => eq(roles.id, id),
+      with: {
+        rolesToPermissions: {
+          with: {
+            permissions: true,
+          },
+        },
+      },
     });
 
     if (!role) {

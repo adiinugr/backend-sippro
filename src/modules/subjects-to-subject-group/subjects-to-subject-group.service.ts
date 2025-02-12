@@ -26,12 +26,7 @@ export class SubjectsToSubjectGroupService {
     return subjectToSubjectGroups;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subjectsToSubjectGroup`;
-  }
-
   // Delete subjets to subject groups by subjectGroupId
-
   async remove(subjectGroupId: number) {
     const deletedSubjectToSubjectGroup = await this.db
       .delete(sbjsToSbjgs)

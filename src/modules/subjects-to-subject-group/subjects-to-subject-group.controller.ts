@@ -22,11 +22,6 @@ export class SubjectsToSubjectGroupController {
     return this.subjectsToSubjectGroupService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subjectsToSubjectGroupService.findOne(+id);
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.subjectsToSubjectGroupService.remove(+id);

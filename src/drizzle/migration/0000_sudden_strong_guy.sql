@@ -1,3 +1,14 @@
+CREATE TABLE IF NOT EXISTS "achievements" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"title" text NOT NULL,
+	"category" text NOT NULL,
+	"medal" text NOT NULL,
+	"level" text NOT NULL,
+	"organizer" text NOT NULL,
+	"date" timestamp NOT NULL,
+	"student_id" integer NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "classrooms" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
@@ -32,10 +43,40 @@ CREATE TABLE IF NOT EXISTS "marks" (
 	"mark" integer NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "permissions" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	CONSTRAINT "permissions_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "roles" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	CONSTRAINT "roles_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "roles_to_permissions" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"role_id" integer NOT NULL,
+	"permissions_id" integer NOT NULL,
+	"create" boolean DEFAULT false NOT NULL,
+	"read" boolean DEFAULT false NOT NULL,
+	"update" boolean DEFAULT false NOT NULL,
+	"delete" boolean DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "rule_categories" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	CONSTRAINT "rule_categories_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "rules" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"point" integer NOT NULL,
+	"rule_category_id" integer NOT NULL,
+	CONSTRAINT "rules_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "stds_to_sbjgs_to_clsrms" (
@@ -75,17 +116,19 @@ CREATE TABLE IF NOT EXISTS "subjects" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"code" text NOT NULL,
 	"name" text NOT NULL,
+	"category" text,
 	CONSTRAINT "subjects_code_unique" UNIQUE("code"),
 	CONSTRAINT "subjects_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "teachers" (
 	"id" serial PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
 	"place_of_birth" text NOT NULL,
 	"date_of_birth" timestamp NOT NULL,
 	"status" text DEFAULT 'teacher' NOT NULL,
 	"email" text NOT NULL,
-	"password" text,
+	"password" text NOT NULL,
 	CONSTRAINT "teachers_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
@@ -94,6 +137,31 @@ CREATE TABLE IF NOT EXISTS "teachers_to_roles" (
 	"role_id" integer NOT NULL,
 	CONSTRAINT "teachers_to_roles_teacher_id_role_id_pk" PRIMARY KEY("teacher_id","role_id")
 );
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "violations" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"date" timestamp NOT NULL,
+	"student_id" integer NOT NULL,
+	"rule_id" integer NOT NULL
+);
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "roles_to_permissions" ADD CONSTRAINT "roles_to_permissions_role_id_roles_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."roles"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "roles_to_permissions" ADD CONSTRAINT "roles_to_permissions_permissions_id_permissions_id_fk" FOREIGN KEY ("permissions_id") REFERENCES "public"."permissions"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "rules" ADD CONSTRAINT "rules_rule_category_id_rule_categories_id_fk" FOREIGN KEY ("rule_category_id") REFERENCES "public"."rule_categories"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "stds_to_sbjgs_to_clsrms" ADD CONSTRAINT "stds_to_sbjgs_to_clsrms_student_id_students_id_fk" FOREIGN KEY ("student_id") REFERENCES "public"."students"("id") ON DELETE cascade ON UPDATE cascade;
@@ -127,6 +195,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "teachers_to_roles" ADD CONSTRAINT "teachers_to_roles_role_id_roles_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."roles"("id") ON DELETE cascade ON UPDATE cascade;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "violations" ADD CONSTRAINT "violations_rule_id_rules_id_fk" FOREIGN KEY ("rule_id") REFERENCES "public"."rules"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

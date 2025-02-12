@@ -14,6 +14,7 @@ export const subjects = pgTable('subjects', {
   id: serial('id').primaryKey(),
   code: text('code').notNull().unique(),
   name: text('name').notNull().unique(),
+  category: text('category'),
 });
 
 // subjects relations

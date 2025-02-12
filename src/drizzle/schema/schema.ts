@@ -8,3 +8,7 @@ export * from './marks.schema';
 export * from './roles.schema';
 export * from './teachers.schema';
 export * from './achievements.schema';
+export * from './rules.schema';
+export * from './violations.schema';
+export * from './ruleCategories.schema';
+export * from './permissions.schema';

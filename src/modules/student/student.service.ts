@@ -77,7 +77,9 @@ export class StudentService {
       },
       where: (students, { eq }) => eq(students.id, id),
       with: {
-        achievements: true,
+        achievements: {
+          orderBy: (achievements, { desc }) => desc(achievements.date),
+        },
         marks: {
           with: {
             subject: true,
@@ -108,6 +110,12 @@ export class StudentService {
                 },
               },
             },
+          },
+        },
+        violations: {
+          orderBy: (violation, { desc }) => desc(violation.date),
+          with: {
+            rule: true,
           },
         },
       },

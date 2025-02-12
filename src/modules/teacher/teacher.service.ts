@@ -4,7 +4,7 @@ import { UpdateTeacherDto } from './dto/update-teacher.dto';
 
 import { DRIZZLE } from 'src/drizzle/drizzle.module';
 import { DrizzleDB } from 'src/drizzle/types/drizzle';
-import { teachers } from 'src/drizzle/schema/teachers.schema';
+import { teachers, teachersToRoles } from 'src/drizzle/schema/teachers.schema';
 import { eq } from 'drizzle-orm';
 
 import * as bcrypt from 'bcrypt';
@@ -51,6 +51,30 @@ export class TeacherService {
       columns: {
         password: false,
       },
+    });
+
+    return teachers;
+  }
+
+  async findAllWithRoles() {
+    const teachers = await this.db.query.teachers.findMany({
+      with: {
+        teachersToRoles: {
+          with: {
+            roles: true,
+          },
+        },
+      },
+      columns: {
+        password: false,
+      },
+      where: (teachers, { exists, eq }) =>
+        exists(
+          this.db
+            .select()
+            .from(teachersToRoles)
+            .where(eq(teachersToRoles.teacherId, teachers.id)),
+        ),
     });
 
     return teachers;
