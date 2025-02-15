@@ -44,7 +44,15 @@ export class TeacherService {
       with: {
         teachersToRoles: {
           with: {
-            roles: true,
+            roles: {
+              with: {
+                rolesToPermissions: {
+                  with: {
+                    permissions: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -85,7 +93,15 @@ export class TeacherService {
       with: {
         teachersToRoles: {
           with: {
-            roles: true,
+            roles: {
+              with: {
+                rolesToPermissions: {
+                  with: {
+                    permissions: true,
+                  },
+                },
+              },
+            },
           },
         },
       },

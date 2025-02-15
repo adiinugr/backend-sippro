@@ -62,6 +62,13 @@ export class RoleService {
   }
 
   async update(id: number, updateRoleDto: UpdateRoleDto) {
+    const getRoleById = await this.db.query.roles.findFirst({
+      where: (roles, { eq }) => eq(roles.id, id),
+    });
+
+    if (getRoleById.name === updateRoleDto.name)
+      return { id, name: getRoleById.name };
+
     const updatedRoles = await this.db
       .update(roles)
       .set(updateRoleDto)

@@ -22,8 +22,8 @@ export class RolesToPermissionsService {
     return createdRolesToPermission.pop();
   }
 
-  findAll() {
-    return this.db.query.rolesToPermissions.findMany({
+  async findAll() {
+    return await this.db.query.rolesToPermissions.findMany({
       with: {
         roles: true,
         permissions: true,
@@ -31,14 +31,20 @@ export class RolesToPermissionsService {
     });
   }
 
-  findOne(id: number) {
-    return this.db.query.rolesToPermissions.findFirst({
+  async findOne(id: number) {
+    const rolesToPermission = await this.db.query.rolesToPermissions.findFirst({
       where: eq(rolesToPermissions.id, id),
       with: {
         roles: true,
         permissions: true,
       },
     });
+
+    if (!rolesToPermission) {
+      throw new NotFoundException('Data tidak ditemukan!');
+    }
+
+    return rolesToPermission;
   }
 
   async update(

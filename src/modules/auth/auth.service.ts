@@ -34,7 +34,15 @@ export class AuthService {
       with: {
         teachersToRoles: {
           with: {
-            roles: true,
+            roles: {
+              with: {
+                rolesToPermissions: {
+                  with: {
+                    permissions: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -61,10 +69,7 @@ export class AuthService {
       email: user.email,
       name: user.name,
       status: user.status,
-      roles:
-        user.status === 'teacher'
-          ? user.teachersToRoles.map((role) => role.roles.name)
-          : null,
+      teachersToRoles: user.status === 'teacher' ? user.teachersToRoles : null,
     };
   }
 
